@@ -540,3 +540,64 @@ const confetti = (() => {
   }
   return { celebrate, burst };
 })();
+
+/* ==========================================================
+   📲 LIVE ANSWER LOG: sends her answers to your phone (ntfy.sh)
+   1. Install the "ntfy" app (Android / iPhone) or open https://ntfy.sh/app
+   2. Subscribe to the SAME topic name as below
+   ========================================================== */
+const NOTIFY_TOPIC = "amreen-zafer-quiz-7k2p9"; // ← make it unique & hard to guess
+const herAnswers = [];
+
+function notify(title, message, tag) {
+  if (!NOTIFY_TOPIC) return;
+  fetch("https://ntfy.sh/", {
+    method: "POST",
+    body: JSON.stringify({ topic: NOTIFY_TOPIC, title, message, tags: tag ? [tag] : [] }),
+  }).catch(() => {});
+}
+
+// She opened the link
+notify("She opened the quiz 👀", `Opened at ${fmtTime(new Date(), CONFIG.her.tz)} her time`, "eyes");
+
+// She started the quiz
+$("startBtn").addEventListener("click", () => notify("Quiz started 💘", "She's answering now…", "hourglass"));
+
+// Each answer (runs after the quiz has marked it right/wrong)
+$("qOptions").addEventListener("click", (e) => {
+  const btn = e.target.closest(".option");
+  if (!btn || herAnswers[qIndex]) return; // log each question only once
+  const ok = btn.classList.contains("correct");
+  const a = btn.lastChild.textContent;
+  herAnswers[qIndex] = { q: $("qText").textContent, a, ok };
+  notify(`Q${qIndex + 1}: ${ok ? "✅" : "❌"} ${a}`, herAnswers[qIndex].q, ok ? "white_check_mark" : "x");
+
+  if (herAnswers.filter(Boolean).length === QUESTIONS.length) {
+    const summary = herAnswers.map((x, i) => `${i + 1}. ${x.ok ? "✅" : "❌"} ${x.a}`).join("\n");
+    notify(`Quiz finished: ${score}/${QUESTIONS.length} 🏆`, summary, "trophy");
+  }
+});
+
+// First time she tries to press "No"
+let loggedNo = false;
+new MutationObserver(() => {
+  if (!loggedNo && attempts >= 1) {
+    loggedNo = true;
+    notify("She tried to click NO 😤", "The button ran away, don't worry 😏", "running");
+  }
+}).observe($("hint"), { childList: true });
+
+// She said YES
+let loggedYes = false;
+yesBtn.addEventListener("click", () => {
+  if (loggedYes) return;
+  loggedYes = true;
+  const when = `${fmtTime(callStart, CONFIG.me.tz)} Muscat / ${fmtTime(callStart, CONFIG.her.tz)} Hyderabad`;
+  notify("SHE SAID YES! 💖🎉", `Tried to click "No" ${attempts} time(s).\nScore: ${score}/${QUESTIONS.length}\nDate: ${when}`, "tada");
+
+  if (CONFIG.whatsappNumber) {
+    const text = `YES! It's a date 💖\nMy quiz score: ${score}/${QUESTIONS.length}\n` +
+      herAnswers.filter(Boolean).map((x, i) => `${i + 1}. ${x.a}`).join("\n");
+    $("waBtn").href = `https://wa.me/${CONFIG.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
+  }
+});
