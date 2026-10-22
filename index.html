@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Hey Amreen Fathima! A Little Quiz For You 💌</title>
+  <meta name="description" content="How well do you know us? A tiny quiz, from Muscat with love." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💞</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=2" />
+</head>
+<body>
+  <div class="bg-hearts" id="bgHearts" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- ============ 1. INTRO ============ -->
+  <main class="screen" id="introScreen">
+    <div class="card card--intro">
+      <p class="eyebrow" id="greeting">Hey you 💕</p>
+      <h1 class="title">How well do you know <span class="script">us?</span></h1>
+
+      <!-- Muscat ✈ Hyderabad route -->
+      <div class="route" aria-label="Distance between us">
+        <div class="city">
+          <span class="city__flag">🇴🇲</span>
+          <strong id="myCity">Muscat</strong>
+          <span class="city__clock" id="myClock">--:--</span>
+        </div>
+
+        <div class="route__line">
+          <svg viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+            <path id="arc" d="M6 50 Q100 -10 194 50" fill="none" stroke="#ff8fab" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" />
+          </svg>
+          <span class="route__plane" aria-hidden="true">✈️</span>
+          <span class="route__km" id="distance">— km</span>
+        </div>
+
+        <div class="city">
+          <span class="city__flag">🇮🇳</span>
+          <strong id="herCity">Hyderabad</strong>
+          <span class="city__clock" id="herClock">--:--</span>
+        </div>
+      </div>
+
+      <p class="intro__text" id="introText"></p>
+
+      <button class="btn btn--primary btn--big" id="startBtn" type="button">Start the quiz 💘</button>
+      <p class="small">7 questions · no pressure · there may be trick questions 😏</p>
+    </div>
+  </main>
+
+  <!-- ============ 2. QUIZ ============ -->
+  <section class="screen" id="quizScreen" hidden>
+    <div class="card card--quiz">
+      <div class="quiz__top">
+        <span class="quiz__count" id="qCount">Question 1 of 7</span>
+        <span class="quiz__score" id="qScore">💖 0</span>
+      </div>
+      <div class="progress" aria-hidden="true"><span id="qProgress"></span></div>
+
+      <div class="quiz__body" id="qBody">
+        <div class="quiz__emoji" id="qEmoji">💭</div>
+        <h2 class="quiz__question" id="qText"></h2>
+        <div class="options" id="qOptions" role="group" aria-label="Answers"></div>
+        <p class="feedback" id="qFeedback" aria-live="polite"></p>
+      </div>
+
+      <button class="btn btn--primary" id="nextBtn" type="button" hidden>Next →</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. RESULT + THE BIG QUESTION ============ -->
+  <section class="screen" id="askScreen" hidden>
+    <div class="card card--ask">
+      <p class="eyebrow">Your results are in… 📋</p>
+      <div class="meter">
+        <div class="meter__label"><span>Love-o-meter</span><strong id="meterPct">0%</strong></div>
+        <div class="meter__bar"><span id="meterFill"></span></div>
+        <p class="meter__note" id="meterNote"></p>
+      </div>
+
+      <h2 class="ask__q">
+        So… will you go on a
+        <span class="script">video-call date</span>
+        with me tonight?
+      </h2>
+      <p class="hint" id="hint" aria-live="polite">Choose wisely… 😇</p>
+
+      <div class="actions">
+        <button class="btn btn--yes" id="yesBtn" type="button">YES! 💖</button>
+        <button class="btn btn--no" id="noBtn" type="button">No</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. SUCCESS ============ -->
+  <section class="screen" id="successScreen" hidden>
+    <article class="card card--success">
+      <span class="badge">It's a date! 💘</span>
+      <h2 class="success__title">Yaaay! See you on camera tonight 🥰</h2>
+      <p class="success__message" id="message"></p>
+
+      <div class="times">
+        <div class="time time--me">
+          <span class="time__flag">🇴🇲</span>
+          <small id="tMyCity">Muscat</small>
+          <strong id="tMyTime">--</strong>
+          <em>my time</em>
+        </div>
+        <div class="time__heart" aria-hidden="true">💞</div>
+        <div class="time time--her">
+          <span class="time__flag">🇮🇳</span>
+          <small id="tHerCity">Hyderabad</small>
+          <strong id="tHerTime">--</strong>
+          <em>your time</em>
+        </div>
+      </div>
+
+      <div class="countdown" id="countdown" aria-live="off">
+        <span class="countdown__label" id="cdLabel">Starts in</span>
+        <div class="countdown__digits">
+          <div><b id="cdH">00</b><small>hrs</small></div>
+          <div><b id="cdM">00</b><small>min</small></div>
+          <div><b id="cdS">00</b><small>sec</small></div>
+        </div>
+      </div>
+
+      <ul class="details">
+        <li class="details__item details__item--pink"><span>📱</span><div><small>Where</small><strong id="dPlatform"></strong></div></li>
+        <li class="details__item details__item--lav"><span>👕</span><div><small>Dress code</small><strong id="dDress"></strong></div></li>
+        <li class="details__item details__item--mint"><span>☕</span><div><small>Bring</small><strong id="dBring"></strong></div></li>
+        <li class="details__item details__item--peach"><span>🎬</span><div><small>Plan</small><strong id="dPlan"></strong></div></li>
+      </ul>
+
+      <p class="tries" id="tries"></p>
+
+      <div class="success__actions">
+        <a class="btn btn--whatsapp" id="waBtn" target="_blank" rel="noopener" hidden>Tell me on WhatsApp 💬</a>
+        <button class="btn btn--primary" id="calendarBtn" type="button">Add to calendar 📅</button>
+        <button class="btn btn--ghost" id="againBtn" type="button">More confetti 🎉</button>
+      </div>
+      <p class="signoff" id="signoff"></p>
+    </article>
+  </section>
+
+  <script src="script.js?v=2"></script>
+</body>
+</html>
