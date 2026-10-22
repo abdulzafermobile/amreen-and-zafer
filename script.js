@@ -15,7 +15,7 @@ const CONFIG = {
 
   call: {
     // Call start in MUSCAT time. Keep the +04:00 at the end!
-    start: "2026-10-22T20:30:00+04:00", // 8:30 PM Muscat = 10:00 PM Hyderabad
+    start: "2026-10-22T22:29:00+04:00", // 8:30 PM Muscat = 10:00 PM Hyderabad
     durationHours: 2,
     platform: "WhatsApp video call",
     dressCode: "Comfiest pyjamas allowed 😴",
