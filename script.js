@@ -30,7 +30,7 @@ const CONFIG = {
   // Your WhatsApp number with country code, digits only (e.g. "968XXXXXXXX").
   // When set, the success screen gets a "Tell me on WhatsApp" button.
   // Leave "" to hide the button.
-  whatsappNumber: "",
+  whatsappNumber: "918977350077",
 };
 
 /* ===== ✏️ QUIZ QUESTIONS — edit freely! =====
